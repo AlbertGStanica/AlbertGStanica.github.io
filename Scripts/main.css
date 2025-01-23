@@ -1,0 +1,34 @@
+body {
+  font-family: "Courier New", Courier, monospace;
+}
+
+#title h1 {
+  text-align: center;
+  margin: 2%;
+}
+
+#title {
+  grid-column: 1;
+
+  grid-row: 1;
+}
+
+#navigation {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#featured {
+  display: grid;
+  grid-template-areas: "games web";
+  grid-column: 1;
+  grid-row: 3;
+}
+
+#gamesHighlight {
+  grid-area: games;
+}
+
+#webHighlight {
+  grid-area: web;
+}
