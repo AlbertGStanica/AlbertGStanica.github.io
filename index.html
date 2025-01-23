@@ -15,6 +15,26 @@
             grid-template-rows: 4;
 
         }
+
+        #featured {
+            display: grid;
+            grid-template-areas: "runningGame runningGame runningGame" "games games games";
+            grid-column: 1;
+            grid-row: 3;
+        }
+
+        #gamesHighlight {
+            grid-area: games;
+            display: flex;
+        }
+
+        #runningGame {
+            grid-area: runningGame;
+        }
+
+        #webHighlight {
+            grid-area: web;
+        }
     </style>
 </head>
 
@@ -55,17 +75,43 @@
     </div>
     <!--END OF NAVIGATION MENU-->
     <div id="featured">
-        <div id="gamesHighlight">
+        <div id="runningGame">
             <h2>Featured Game</h2>
-            <div id="runningGame"></div>
-            <iframe title="runningGame" src="https://itch.io/embed/1020687" width="552" height="167"><a
-                    href="https://nois3less.itch.io/onionz">OnionZ by nois3less</a></iframe>
-            <iframe frameborder="0" src="https://itch.io/embed-upload/3748241?color=5cece9" allowfullscreen=""
-                width="800" height="500"><a href="https://nois3less.itch.io/onionz">Play OnionZ on itch.io</a></iframe>
+            <div id="running">
+                <iframe frameborder="0" src="https://itch.io/embed-upload/3748241?color=5cece9" allowfullscreen=""
+                    width="800" height="500"><a href="https://nois3less.itch.io/onionz">Play OnionZ on
+                        itch.io</a></iframe>
+            </div>
+
         </div>
-        <div id="webHighlight">
-            <h2>Featured WebSite / Page</h2>
+        <div id="gamesHighlight">
+            <div>
+                <iframe title="OnionZ" src="https://itch.io/embed/1020687" width="552" height="167"><a
+                        href="https://nois3less.itch.io/onionz">OnionZ by nois3less</a></iframe>
+                <br>
+                <a href="/Pages/Games/OnionZ.html">OnionZ</a>
+            </div>
+            <div>
+                <iframe title="zoink" src="https://itch.io/embed/1642087" width="552" height="167"><a
+                        href="https://nois3less.itch.io/zoink">ZOINk by nois3less</a></iframe>
+                <br>
+                <a href="/Pages/Games/zoink.html">ZOINK</a>
+            </div>
+            <div>
+                <iframe title="4PlayerPong" src="https://itch.io/embed/1210463" width="552" height="167"><a
+                        href="https://nois3less.itch.io/4-player-pong">4 Player Pong by nois3less</a></iframe>
+                <br>
+                <a href="/Pages/Games/4PlayerPong.html">4 Player Pong</a>
+            </div>
+            <div>
+                <iframe title="F+" src="https://itch.io/embed/1048684" width="552" height="167"><a
+                        href="https://nois3less.itch.io/8bit-adventure-alpha">8 Bit Adventure by nois3less</a></iframe>
+                <br>
+                <a href="/Pages/Games/8BitAdventure.html">8 Bit Adventure</a>
+            </div>
+
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
