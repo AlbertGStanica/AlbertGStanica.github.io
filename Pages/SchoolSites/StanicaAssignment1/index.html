@@ -1,0 +1,119 @@
+<!--DOCUMENT NAME: INDEX.HTML-->
+<!--TITLE: Table Search with JavaScript-->
+<!--AUTHOR: Albert Stanica-->
+<!--DATE: 18/01/2025-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Highlight</title>
+    <script src="a1.js"></script>
+    <style>
+        .highlight {
+            background-color: aqua;
+        }
+
+        table {
+            border-style: ridge;
+            border-color: yellow;
+        }
+
+        table tr td {
+            border-style: ridge;
+            border-color: black;
+            border-radius: 10%;
+            text-align: center;
+        }
+
+        table tr th {
+            text-align: center;
+        }
+
+        body {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            grid-template-rows: auto;
+        }
+
+        #menu,
+        #menu1,
+        #menu2,
+        #menu3 {
+            display: grid;
+        }
+
+        #menu {
+            grid-template-columns: auto auto auto;
+            grid-template-areas: "menu1 menu1 menu1" "menu2 menu2 menu2" "menu3 menu3 menu3";
+            background-color: rgb(113, 217, 255);
+            border-style: groove;
+            grid-row: 1;
+            grid-column: 2;
+            display: inline-block;
+        }
+
+        #menu1 {
+            grid-area: menu1;
+            grid-template-columns: 20% auto 30%;
+        }
+
+        #menu2 {
+            grid-area: menu2;
+            grid-template-columns: 20% auto 30%;
+        }
+
+        #menu3 {
+            grid-area: menu3;
+        }
+
+        #results {
+            margin-top: 5%;
+            grid-column: 2;
+        }
+
+        #resultsContent {
+            background-color: yellow;
+            border-style: ridge;
+        }
+
+        #table {
+            grid-row-start: 1;
+            grid-row-end: 9;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="table"></div>
+    <div id="menu">
+        <!--MENU-->
+        <div id="menu1">
+            <label for="city">City:</label>
+            <input type="text" id="city" name="CityField">
+            <button type="button" id="btnSearchByCity">Search by City</button>
+        </div>
+        <div id="menu2">
+            <label for="country">Country:</label>
+            <input type="text" name="CountryField" id="country">
+            <button type="button" id="btnSearchByCountry">Search by Country</button>
+        </div>
+        <div id="menu3">
+            <label for="min">Min:</label>
+            <input type="text" name="MinField" id="min">
+            <label for="max">Max:</label>
+            <input type="text" name="MaxField" id="max">
+            <button type="button" id="btnSearchByPopulation">Search by Population Range</button>
+        </div>
+    </div>
+
+    <div id="results">
+        <h2>Results</h2>
+        <div id="resultsContent">
+        </div>
+    </div>
+
+</body>
+
+</html>
