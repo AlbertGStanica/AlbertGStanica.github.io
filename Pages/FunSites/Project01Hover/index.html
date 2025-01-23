@@ -11,6 +11,7 @@
             background-color: greenyellow;
         }
 
+
         td {
             border-style: ridge;
             border-color: black;
@@ -22,10 +23,14 @@
 
 <body>
     <div id="form">
-        <label for="rowSize">RowSize:</label>
-        <input type="number" id="rowSize">
-        <label for="colSize">ColSize:</label>
-        <input type="number" id="colSize">
+        <div>
+            <label for="rowSize">RowSize:</label>
+            <input type="number" id="rowSize">
+        </div>
+        <div>
+            <label for="colSize">ColSize:</label>
+            <input type="number" id="colSize">
+        </div>
         <button type="button" id="build">BUILD TABLE</button>
     </div>
     <div id="table"></div>
