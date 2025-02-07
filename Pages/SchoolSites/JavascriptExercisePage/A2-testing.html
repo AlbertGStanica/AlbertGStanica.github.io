@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>A2 Testing</title>
+        <!-- Bootstrap -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            crossorigin="anonymous"
+        />
+        <!-- JavaScript Bundle with Popper -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"
+        ></script>
+        <style>
+            .testCase:hover {
+                background-color: rgb(240, 240, 255);
+            }
+            /*
+            .form-check-input {
+                top: 0.8rem;
+                scale: 1;
+                margin-right: 0.7rem;
+            } */
+        </style>
+        <script>
+            const LETTERS = "abcdefghijklmnopqrstuvwxyz";
+            const SECTIONS = [
+                {
+                    sectionName: "Exercise 1",
+                    sectionID: "#ex1",
+                    prefix: "ex1-",
+                },
+                {
+                    sectionName: "Exercise 2",
+                    sectionID: "#ex2",
+                    prefix: "ex2-",
+                },
+                {
+                    sectionName: "Exercise 3",
+                    sectionID: "#ex3",
+                    prefix: "ex3-",
+                },
+                {
+                    sectionName: "Exercise 4",
+                    sectionID: "#ex4",
+                    prefix: "ex4-",
+                },
+                {
+                    sectionName: "Exercise 5",
+                    sectionID: "#ex5",
+                    prefix: "ex5-",
+                },
+                {
+                    sectionName: "Exercise 6",
+                    sectionID: "#ex6",
+                    prefix: "ex6-",
+                },
+                {
+                    sectionName: "Exercise 7",
+                    sectionID: "#ex7",
+                    prefix: "ex7-",
+                },
+                {
+                    sectionName: "Exercise 8",
+                    sectionID: "#ex8",
+                    prefix: "ex8-",
+                },
+                {
+                    sectionName: "Exercise 9",
+                    sectionID: "#ex9",
+                    prefix: "ex9-",
+                },
+                {
+                    sectionName: "Exercise 10",
+                    sectionID: "#ex10",
+                    prefix: "ex10-",
+                },
+            ];
+            const SECTIONS_EXTRA = [
+                {
+                    sectionName: "Exercise 11",
+                    sectionID: "#ex11",
+                    prefix: "ex11-",
+                },
+                {
+                    sectionName: "Exercise 12",
+                    sectionID: "#ex12",
+                    prefix: "ex12-",
+                },
+                {
+                    sectionName: "Exercise 13",
+                    sectionID: "#ex13",
+                    prefix: "ex13-",
+                },
+            ];
+
+            window.onload = function () {
+                document
+                    .querySelector("form")
+                    .addEventListener("submit", handleSubmission);
+
+                let numAuthorsInputElement =
+                    document.querySelector("#numAuthorsInput");
+                numAuthorsInputElement.value = "1";
+                numAuthorsInputElement.addEventListener(
+                    "change",
+                    handleNumAuthorsChange
+                );
+                numAuthorsInputElement.dispatchEvent(new Event("change"));
+
+                populateRadioButtons();
+            };
+
+            function handleNumAuthorsChange() {
+                let numAuthors =
+                    +document.querySelector("#numAuthorsInput").value;
+                //alert(numAuthors);
+                let html = "";
+                for (let i = 1; i <= numAuthors; i++) {
+                    html += `<input id="authorInput${i}" name="author${i}" class="form-input w-100" required />`;
+                }
+                document.querySelector("#authorInputs").innerHTML = html;
+
+                if (numAuthors < 3) {
+                    document
+                        .querySelector("#extraExercises")
+                        .classList.add("d-none");
+                } else {
+                    document
+                        .querySelector("#extraExercises")
+                        .classList.remove("d-none");
+                }
+            }
+
+            function handleSubmission(e) {
+                let passes = 0,
+                    failures = 0,
+                    notrun = 0;
+
+                const formData = new FormData(e.target);
+                let numAuthors = +formData.get("numAuthors");
+                let theSections =
+                    numAuthors < 3 ? SECTIONS : SECTIONS.concat(SECTIONS_EXTRA);
+
+                theSections.forEach((section) => {
+                    let cases = document
+                        .querySelector(section.sectionID)
+                        .querySelectorAll(".testCase");
+                    for (let i = 0; i < cases.length; i++) {
+                        let id = section.prefix + LETTERS[i];
+                        let temp = formData.get(id);
+                        if (temp === "PASS") {
+                            passes++;
+                        } else if (temp === "FAIL") {
+                            failures++;
+                        } else if (temp === "NR") {
+                            notrun++;
+                        } else {
+                            alert("ERROR unknown value in radio button!");
+                        }
+
+                        // update color in column 1
+                        let elem = cases[i].querySelector("span");
+                        if (temp === "PASS") {
+                            elem.classList = "badge text-bg-success";
+                        } else if (temp === "FAIL") {
+                            elem.classList = "badge text-bg-danger";
+                        } else if (temp === "NR") {
+                            elem.classList = "badge text-bg-warning";
+                        }
+                    }
+                });
+                document.querySelector("#passCount").innerHTML = passes;
+                document.querySelector("#failCount").innerHTML = failures;
+                document.querySelector("#notRunCount").innerHTML = notrun;
+                e.preventDefault();
+                logToConsole(formData, passes, failures, notrun);
+            }
+
+            function logToConsole(formData, passes, failures, notrun) {
+                let title = "Assignment 2 Test Results";
+                let dateLine = "< " + new Date().toLocaleString() + " >";
+                let longest = [title.length, dateLine.length].sort()[1];
+
+                let stars = "*".repeat(longest);
+
+                let msg = "\n\n";
+                msg += stars + "\n";
+                msg += dateLine + "\n\n";
+                msg += title + "\n\n";
+
+                msg += "Author(s):\n";
+                for (let e of formData.entries()) {
+                    if (e[0].startsWith("author")) {
+                        msg += `\t${e[1]}\n`;
+                    }
+                }
+
+                msg += "\n";
+                msg += "SUMMARY:\n";
+                msg += "\tPasses:   " + passes + "\n";
+                msg += "\tFailures: " + failures + "\n";
+                msg += "\tNot Run:  " + notrun + "\n";
+                msg += "\n";
+
+                msg += "DETAILS\n";
+                let numAuthors = +formData.get("numAuthors");
+                let theSections =
+                    numAuthors < 3 ? SECTIONS : SECTIONS.concat(SECTIONS_EXTRA);
+                theSections.forEach((section) => {
+                    let cases = document
+                        .querySelector(section.sectionID)
+                        .querySelectorAll(".testCase");
+                    for (let i = 0; i < cases.length; i++) {
+                        let id = section.prefix + LETTERS[i];
+                        let temp = formData.get(id);
+                        msg += `\t${id}:${" ".repeat(
+                            6 - id.length + 1
+                        )}${temp}\n`;
+                    }
+                    msg += "\n";
+                });
+
+                msg += stars;
+
+                console.clear();
+                console.log(msg);
+            }
+
+            function buildRadioHtml(caseID) {
+                let html = '<div class="col-2">';
+                html += '<div class="form-check">';
+                html +=
+                    '<input class="form-check-input" type="radio" value="PASS" name="' +
+                    caseID +
+                    '" />';
+                html += '<label class="form-check-label"> Passed </label>';
+                html += "</div>";
+                html += '<div class="form-check">';
+                html +=
+                    '<input class="form-check-input" type="radio" value="FAIL" name="' +
+                    caseID +
+                    '" />';
+                html += '<label class="form-check-label"> Failed </label>';
+                html += "</div>";
+                html += '<div class="form-check">';
+                html +=
+                    '<input class="form-check-input" type="radio" value="NR" name="' +
+                    caseID +
+                    '" checked/>';
+                html += '<label class="form-check-label"> Not Run </label>';
+                html += "</div>";
+                html += "</div";
+
+                return html;
+            }
+
+            function populateRadioButtons() {
+                let docSections = document.querySelectorAll("section");
+                for (let i = 0; i < docSections.length; i++) {
+                    let section = docSections[i];
+                    let sectionID = section.id;
+
+                    let cases = document
+                        .querySelector("#" + sectionID)
+                        .querySelectorAll(".testCase");
+
+                    for (let j = 0; j < cases.length; j++) {
+                        let caseID = sectionID + "-" + LETTERS[j];
+                        let testcase = document.querySelector("#" + caseID);
+                        testcase.innerHTML += buildRadioHtml(caseID);
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="container">
+        <form>
+            <div class="row">
+                <h1 class="display-1 col-6 col-md-8 col-lg-9 col-xl-10">
+                    A2 Testing
+                </h1>
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                    <div class="row border border-success p-2 fs-5">
+                        <div class="col">Passed</div>
+                        <div class="col">
+                            <span id="passCount" class="badge text-bg-success"
+                                >?</span
+                            >
+                        </div>
+                    </div>
+                    <div class="row border border-danger p-2 fs-5">
+                        <div class="col">Failed</div>
+                        <div class="col">
+                            <span id="failCount" class="badge text-bg-danger"
+                                >?</span
+                            >
+                        </div>
+                    </div>
+                    <div class="row border border-warning p-2 fs-5">
+                        <div class="col">Not Run</div>
+                        <div class="col">
+                            <span id="notRunCount" class="badge text-bg-warning"
+                                >?</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- authors -->
+            <div id="authorInfo" class="row mt-5">
+                <div class="col-2">
+                    <label class="form-label">Number of Authors: </label>
+                    <select
+                        id="numAuthorsInput"
+                        name="numAuthors"
+                        class="form-select"
+                    >
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                <div class="col-10">
+                    <label class="form-label">Author Names:</label>
+                    <div id="authorInputs"></div>
+                </div>
+            </div>
+
+            <div class="row mt-5 mb-5">
+                <button type="submit" class="btn btn-primary btn-lg col-12">
+                    Update
+                </button>
+            </div>
+
+            <!-- Exercise 1 -->
+            <section id="ex1">
+                <h2 class="mt-5 mb-3">Exercise 1</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+                <div id="ex1-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex1-a</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Min: 8</li>
+                            <li>Max: 13</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">8, 9, 10, 11, 12, 13</div>
+                </div>
+                <div id="ex1-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex1-b</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Min: -2</li>
+                            <li>Max: 2</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">-2, -1, 0, 1, 2</div>
+                </div>
+                <div id="ex1-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex1-c</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Min: 7</li>
+                            <li>Max: 7</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">7</div>
+                </div>
+                <div id="ex1-d" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex1-d</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Min: 7</li>
+                            <li>Max: 6</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 2 -->
+            <section id="ex2">
+                <h2 class="mt-5 mb-3">Exercise 2</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+                <div id="ex2-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex2-a</span>
+                    </div>
+                    <div class="col-5">8, 17, 5, 2, 15, 6, 5, 3</div>
+                    <div class="col-4">
+                        <ul>
+                            <li>total: 61</li>
+                            <li>average: 7.625</li>
+                            <li>minimum: 2</li>
+                            <li>maximum: 17</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 3 -->
+            <section id="ex3">
+                <h2 class="mt-5 mb-3">Exercise 3</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+                <div id="ex3-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex3-a</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Nums: 1, 2, 4, 2, 4, 8, 4, 8, 16</li>
+                            <li>Key: 4</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">3</div>
+                </div>
+                <div id="ex3-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex3-b</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Nums: 1, 2, 4, 2, 4, 8, 4, 8, 16</li>
+                            <li>Key: 16</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">1</div>
+                </div>
+                <div id="ex3-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex3-c</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>Nums: 1, 2, 4, 2, 4, 8, 4, 8, 16</li>
+                            <li>Key: 5</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">0</div>
+                </div>
+            </section>
+
+            <!-- Exercise 4 -->
+            <section id="ex4">
+                <h2 class="mt-5 mb-3">Exercise 4</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex4-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex4-a</span>
+                    </div>
+                    <div class="col-5">numStars: 14</div>
+                    <div class="col-4">**************</div>
+                </div>
+
+                <div id="ex4-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex4-b</span>
+                    </div>
+                    <div class="col-5">numStars: -3</div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 5 -->
+            <section id="ex5">
+                <h2 class="mt-5 mb-3">Exercise 5</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex5-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex5-a</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>numStars: 14</li>
+                            <li>starsPerLine: 6</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">******<br />******<br />**</div>
+                </div>
+
+                <div id="ex5-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex5-b</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>numStars: 14</li>
+                            <li>starsPerLine: 15</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">**************</div>
+                </div>
+
+                <div id="ex5-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex5-c</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>numStars: 2</li>
+                            <li>starsPerLine: 0</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+
+                <div id="ex5-d" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex5-d</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>numStars: 0</li>
+                            <li>starsPerLine: 2</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 6 -->
+            <section id="ex6">
+                <h2 class="mt-5 mb-3">Exercise 6</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex6-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex6-a</span>
+                    </div>
+                    <div class="col-5">Today is Another Day</div>
+                    <div class="col-4">T*d*y is *n*th*r D*y</div>
+                </div>
+
+                <div id="ex6-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex6-b</span>
+                    </div>
+                    <div class="col-5">AaEeIiOoUu</div>
+                    <div class="col-4">**********</div>
+                </div>
+
+                <div id="ex6-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex6-c</span>
+                    </div>
+                    <div class="col-5">hmmm</div>
+                    <div class="col-4">hmmm</div>
+                </div>
+            </section>
+
+            <!-- Exercise 7 -->
+            <section id="ex7">
+                <h2 class="mt-5 mb-3">Exercise 7</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex7-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex7-a</span>
+                    </div>
+                    <div class="col-5">50</div>
+                    <div class="col-4">
+                        <ul>
+                            <li>Base Cost: 250</li>
+                            <li>Tax: 37.5</li>
+                            <li>Total: 287.5</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="ex7-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex7-b</span>
+                    </div>
+                    <div class="col-5">500</div>
+                    <div class="col-4">
+                        <ul>
+                            <li>Base Cost: 2000</li>
+                            <li>Tax: 300</li>
+                            <li>Total: 2300</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="ex7-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex7-c</span>
+                    </div>
+                    <div class="col-5">1500</div>
+                    <div class="col-4">
+                        <ul>
+                            <li>Base Cost: 4500</li>
+                            <li>Tax: 675</li>
+                            <li>Total: 5175</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="ex7-d" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex7-d</span>
+                    </div>
+                    <div class="col-5">-1</div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 8 -->
+            <section id="ex8">
+                <h2 class="mt-5 mb-3">Exercise 8</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex8-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex8-a</span>
+                    </div>
+                    <div class="col-5">205</div>
+                    <div class="col-4">
+                        <ul>
+                            <li>Number of Boxes: 8</li>
+                            <li>Number of Singles: 13</li>
+                            <li>Cost of Boxes: 256</li>
+                            <li>Cost of Singles: 22.75</li>
+                            <li>Total Cost: 278.75</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="ex8-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex8-b</span>
+                    </div>
+                    <div class="col-5">-1</div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 9 -->
+            <section id="ex9">
+                <h2 class="mt-5 mb-3">Exercise 9</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex9-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex9-a</span>
+                    </div>
+                    <div class="col-5">1101</div>
+                    <div class="col-4">
+                        2<sup>3</sup> + 2<sup>2</sup> + 2<sup>0</sup> = 13
+                    </div>
+                </div>
+
+                <div id="ex9-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex9-b</span>
+                    </div>
+                    <div class="col-5">11011001</div>
+                    <div class="col-4">
+                        2<sup>7</sup> + 2<sup>6</sup> + 2<sup>4</sup>+2<sup
+                            >3</sup
+                        >
+                        + 2<sup>0</sup> = 217
+                    </div>
+                </div>
+
+                <div id="ex9-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex9-c</span>
+                    </div>
+                    <div class="col-5">10201</div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Exercise 10 -->
+            <section id="ex10">
+                <h2 class="mt-5 mb-3">Exercise 10</h2>
+
+                <div class="row text-bg-dark fs-5">
+                    <div class="col-1">Case</div>
+                    <div class="col-5">Input(s)</div>
+                    <div class="col-4">Expected Output</div>
+                    <div class="col-2">Result</div>
+                </div>
+
+                <div id="ex10-a" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-a</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>40</li>
+                            <li>80</li>
+                            <li>60</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">Acute Triangle</div>
+                </div>
+
+                <div id="ex10-b" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-b</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>90</li>
+                            <li>60</li>
+                            <li>30</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">Right Triangle</div>
+                </div>
+
+                <div id="ex10-c" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-c</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>30</li>
+                            <li>50</li>
+                            <li>100</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">Obtuse Triangle</div>
+                </div>
+
+                <div id="ex10-d" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-d</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>30</li>
+                            <li>50</li>
+                            <li>90</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+
+                <div id="ex10-e" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-e</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>80</li>
+                            <li>100</li>
+                            <li>20</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+
+                <div id="ex10-f" class="row border-bottom pt-3 testCase">
+                    <div class="col-1">
+                        <span class="badge text-bg-warning">ex10-f</span>
+                    </div>
+                    <div class="col-5">
+                        <ul>
+                            <li>80</li>
+                            <li>100</li>
+                            <li>0</li>
+                        </ul>
+                    </div>
+                    <div class="col-4">error message</div>
+                </div>
+            </section>
+
+            <!-- Extra Exercises -->
+            <div id="extraExercises" class="d-none">
+                <!-- Exercise 11 -->
+                <section id="ex11">
+                    <h2 class="mt-5 mb-3">Exercise 11</h2>
+
+                    <div class="row text-bg-dark fs-5">
+                        <div class="col-1">Case</div>
+                        <div class="col-5">Input(s)</div>
+                        <div class="col-4">Expected Output</div>
+                        <div class="col-2">Result</div>
+                    </div>
+
+                    <div id="ex11-a" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex11-a</span>
+                        </div>
+                        <div class="col-5">
+                            Fredericton is the capitol of New Brunswick
+                        </div>
+                        <div class="col-4">
+                            ***********<br />
+                            **<br />
+                            ***<br />
+                            *******<br />
+                            **<br />
+                            ***<br />
+                            *********
+                        </div>
+                    </div>
+
+                    <div id="ex11-b" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex11-b</span>
+                        </div>
+                        <div class="col-5">Quebec</div>
+                        <div class="col-4">******</div>
+                    </div>
+                </section>
+
+                <!-- Exercise 12 -->
+                <section id="ex12">
+                    <h2 class="mt-5 mb-3">Exercise 12</h2>
+
+                    <div class="row text-bg-dark fs-5">
+                        <div class="col-1">Case</div>
+                        <div class="col-5">Input(s)</div>
+                        <div class="col-4">Expected Output</div>
+                        <div class="col-2">Result</div>
+                    </div>
+
+                    <div id="ex12-a" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex12-a</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>
+                                    sentence: Fredericton is the capitol of New
+                                    Brunswick
+                                </li>
+                                <li>min length: 4</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">Fredericton capitol Brunswick</div>
+                    </div>
+
+                    <div id="ex12-b" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex12-b</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>
+                                    sentence: Fredericton is the capitol of New
+                                    Brunswick
+                                </li>
+                                <li>min length: 3</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">
+                            Fredericton the capitol New Brunswick
+                        </div>
+                    </div>
+
+                    <div id="ex12-c" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex12-c</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>
+                                    sentence: Fredericton is the capitol of New
+                                    Brunswick
+                                </li>
+                                <li>min length: -3</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">error message</div>
+                    </div>
+                </section>
+
+                <!-- Exercise 13 -->
+                <section id="ex13">
+                    <h2 class="mt-5 mb-3">Exercise 13</h2>
+
+                    <div class="row text-bg-dark fs-5">
+                        <div class="col-1">Case</div>
+                        <div class="col-5">Input(s)</div>
+                        <div class="col-4">Expected Output</div>
+                        <div class="col-2">Result</div>
+                    </div>
+
+                    <div id="ex13-a" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex13-a</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>set A: 2, 9, 5, 7, 3</li>
+                                <li>set B: 7, 4, 6, 1, 1</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">9, 13, 11, 8, 4</div>
+                    </div>
+
+                    <div id="ex13-b" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex13-b</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>set A: -2, 9, 5, 0, -3</li>
+                                <li>set B: 7, -4, 0, 1, -1</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">5, 5, 5, 1, -4</div>
+                    </div>
+
+                    <div id="ex13-c" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex13-c</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>set A: 2, 9, 5, 7, 3</li>
+                                <li>set B: 7, 4, 6, 1</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">error message</div>
+                    </div>
+
+                    <div id="ex13-d" class="row border-bottom pt-3 testCase">
+                        <div class="col-1">
+                            <span class="badge text-bg-warning">ex13-d</span>
+                        </div>
+                        <div class="col-5">
+                            <ul>
+                                <li>set A: 2, 9, 5, 7</li>
+                                <li>set B: 7, 4, 6, 1, 1</li>
+                            </ul>
+                        </div>
+                        <div class="col-4">error message</div>
+                    </div>
+                </section>
+            </div>
+        </form>
+    </body>
+</html>

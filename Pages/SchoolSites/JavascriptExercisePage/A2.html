@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="A2.css">
+    <script src="A2.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="tabcontain">
+            <div id="A" class="tab">Exercise 1</div>
+            <div id="B" class="tab">Exercise 2</div>
+            <div id="C" class="tab">Exercise 3</div>
+            <div id="D" class="tab">Exercise 4</div>
+            <div id="E" class="tab">Exercise 5</div>
+            <div id="F" class="tab">Exercise 6</div>
+            <div id="G" class="tab">Exercise 7</div>
+            <div id="H" class="tab">Exercise 8</div>
+            <div id="I" class="tab">Exercise 9</div>
+            <div id="J" class="tab">Exercise 10</div>
+        </div>
+        <div id="sheetcontain">
+            <div id="Exercise_A" class="sheet">
+                <h3>Please insert two numbers into the input boxes below:</h3>
+
+                <div class="label">
+                    <label for="inputmin1">Min:</label>
+                    <input type="number" id="inputmin1">
+                </div>
+
+                <div class="label">
+                    <label for="inputmax1">Max:</label>
+                    <input type="number" id="inputmax1">
+                </div>
+
+                <button type="submit" id="exercise1">Submit</button>
+                <label>Output:</label>
+                <div id="output1" class="hidden">
+                </div>
+
+            </div>
+
+            <div id="Exercise_B" class="sheet">
+                <h3>Please insert a series of numbers, separated by commas, into the input box below:</h3>
+                <div class="label">
+                    <label for="input2">Numbers:</label>
+                    <input type="text" id="input2">
+                </div>
+
+                <button type="submit" id="exercise2">Submit</button>
+                <label>Output:</label>
+                <div id="output2" class="hidden"></div>
+
+            </div>
+            <div id="Exercise_C" class="sheet">
+                <h3>Please enter a list of numbers separated by commas, as well as a key to sort through those numbers:
+                </h3>
+                <div class="label">
+                    <label for="input3">Input:</label>
+                    <input type="text" id="input3">
+                </div>
+                <div class="label">
+                    <label for="inputkey3">Key:</label>
+                    <input type="text" id="inputkey3">
+                </div>
+                <button type="button" id="exercise3">Accept</button>
+                <div class="label">
+                    <label>Output:</label>
+                    <div id="output3" class="hidden"></div>
+                </div>
+            </div>
+            <div id="Exercise_D" class="sheet">
+                <h3>Enter the number of stars you want to see.</h3>
+                <div class="label">
+                    <label for="input4">Input:</label>
+                    <input type="text" id="input4">
+                    <button type="button" id="exercise4">Submit</button>
+                </div>
+                <div class="label">
+                    <label>Output: </label>
+                    <div id="output4" class="hidden"></div>
+                </div>
+
+            </div>
+            <div id="Exercise_E" class="sheet">
+                <h3>Enter the number of stars and max per line</h3>
+                <div id="label">
+                    <label for="input5A">Number of Stars:</label>
+                    <input type="text" id="input5A">
+                    <br>
+                    <label for="input5B">Max Per Line:</label>
+                    <input type="text" id="input5B">
+                    <br>
+                    <button type="button" id="exercise5">Accept</button>
+                </div>
+                <div class="label">
+                    <label>Output:</label>
+                    <div id="output5" class="hidden"></div>
+                </div>
+            </div>
+            <div id="Exercise_F" class="sheet">
+                <h3>Vowel Counter and Star Maker</h3>
+                <div class="label">
+                    <label for="input6">Input:</label>
+                    <input type="text" id="input6">
+                    <br>
+                    <button type="button" id="exercise6">Enter</button>
+                </div>
+                <div class="label">
+                    <label>Number of Vowels:</label>
+                    <div id="output6A" class="hidden"></div>
+                    <br>
+                    <label>Starified:</label>
+                    <div id="output6B" class="hidden"></div>
+                </div>
+            </div>
+
+            <div id="Exercise_G" class="sheet">
+                <h3>Please enter the number of items you want shipped:</h3>
+                <div class="label">
+                    <label for="input7">Number of Items:</label>
+                    <input type="number" id="input7">
+                </div>
+
+                <button type="submit" id="exercise7">Submit</button>
+                <label>Output:</label>
+                <div id="output7" class="hidden"></div>
+
+            </div>
+            <div id="Exercise_H" class="sheet">
+                <h3>Please input the number of Snicker bars you want to buy:</h3>
+                <div class="label">
+                    <label for="input8">Number of Snicker bars:</label>
+                    <input type="number" id="input8">
+                </div>
+
+                <button type="submit" id="exercise8">Submit</button>
+                <label>Output:</label>
+                <div id="output8" class="hidden"></div>
+
+            </div>
+            <div id="Exercise_I" class="sheet">
+                <h3>Please provide a series of binary numbers (0's and 1's):</h3>
+                <div class="label">
+                    <label for="input9">Binary number:</label>
+                    <input type="text" id="input9">
+                </div>
+
+                <button type="submit" id="exercise9">Submit</button>
+                <label>Output:</label>
+
+                <div id="output9" class="hidden"></div>
+
+            </div>
+
+            <div id="Exercise_J" class="sheet">
+                <h3>Type of triangle</h3>
+                <div class="label">
+                    <label for="input10A">Angle: </label>
+                    <input type="number" id="input10A">
+                    <br>
+                    <label for="input10B">Angle: </label>
+                    <input type="number" id="input10B">
+                    <br>
+                    <label for="input10C">Angle: </label>
+                    <input type="number" id="input10C">
+                    <br>
+                    <button type="button" id="exercise10">Submit</button>
+                </div>
+                <div class="label">
+                    <label>Output: </label>
+                    <br>
+                    <div id="output10" class="hidden"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

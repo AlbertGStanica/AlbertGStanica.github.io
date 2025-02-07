@@ -1,0 +1,61 @@
+.container {
+    grid-template-columns: 10% auto;
+    grid-template-rows: auto 1fr;
+    display: grid;
+}
+
+body {
+    background-color: darkgray;
+
+    .tab {
+        border: thin solid;
+        padding: 10px;
+        background-color: lightgray;
+    }
+
+    .tab:hover {
+        cursor: pointer;
+    }
+
+    .tabcontain {
+        display: grid;
+        grid-column: 1;
+    }
+
+    .sheet {
+        display: grid;
+        grid-column: 2;
+        grid-row: span 2;
+        padding-left: 10px;
+        margin-left: 5px;
+        background-color: lightgray;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+
+    button {
+        width: 25%;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .label {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .active {
+        background-color: lightblue;
+    }
+
+    .output {
+        border: dashed red;
+        padding: 10px;
+        margin: 10px;
+    }

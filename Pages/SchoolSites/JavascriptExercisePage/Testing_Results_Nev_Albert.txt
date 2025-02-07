@@ -1,0 +1,58 @@
+*************************
+< 2/7/2025, 9:58:46 AM >
+
+Assignment 2 Test Results
+
+Author(s):
+	Nevarre Sokolowski
+	Albert Stanica
+
+SUMMARY:
+	Passes:   32
+	Failures: 0
+	Not Run:  0
+
+DETAILS
+	ex1-a:  PASS
+	ex1-b:  PASS
+	ex1-c:  PASS
+	ex1-d:  PASS
+
+	ex2-a:  PASS
+
+	ex3-a:  PASS
+	ex3-b:  PASS
+	ex3-c:  PASS
+
+	ex4-a:  PASS
+	ex4-b:  PASS
+
+	ex5-a:  PASS
+	ex5-b:  PASS
+	ex5-c:  PASS
+	ex5-d:  PASS
+
+	ex6-a:  PASS
+	ex6-b:  PASS
+	ex6-c:  PASS
+
+	ex7-a:  PASS
+	ex7-b:  PASS
+	ex7-c:  PASS
+	ex7-d:  PASS
+
+	ex8-a:  PASS
+	ex8-b:  PASS
+
+	ex9-a:  PASS
+	ex9-b:  PASS
+	ex9-c:  PASS
+
+	ex10-a: PASS
+	ex10-b: PASS
+	ex10-c: PASS
+	ex10-d: PASS
+	ex10-e: PASS
+	ex10-f: PASS
+
+*************************
